@@ -31,7 +31,7 @@ fun MainScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().padding(16.dp)
     ) {
         val cardNumber = remember { mutableStateOf("") }
 
@@ -92,10 +92,7 @@ fun MainScreen(
 fun MainScreenPreview() {
     BinListTheme() {
         Scaffold() { innerPadding ->
-            Box(
-                Modifier
-                    .padding(innerPadding)
-            ) {
+            Box(Modifier.padding(innerPadding)) {
                 MainScreen {}
             }
         }
@@ -108,10 +105,7 @@ fun MainScreenPreview() {
 fun MainScreenPreviewDark() {
     BinListTheme(darkTheme = true) {
         Scaffold() { innerPadding ->
-            Box(
-                Modifier
-                    .padding(innerPadding)
-            ) {
+            Box(Modifier.padding(innerPadding)) {
                 MainScreen {}
             }
         }

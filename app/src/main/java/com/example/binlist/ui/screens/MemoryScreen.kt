@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.binlist.model.CardResponse
 import com.example.binlist.ui.composables.CaptionText
 import com.example.binlist.ui.composables.NullableText
+import com.example.binlist.ui.composables.cardSpacedFormat
 import com.example.binlist.ui.theme.BinListTheme
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,25 +25,37 @@ fun MemoryScreen(
 ) {
     LazyColumn() {
         items(cards) { card ->
-            Column {
-                Row(
-                    modifier = Modifier.clickable { showDetailedCard(card) },
-                    horizontalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    CaptionText(caption = "BIN") { NullableText(card.bin) }
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .clickable { showDetailedCard(card) }
+                .padding(horizontal = 16.dp)
+            ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
+                    CaptionText(caption = "BIN") { NullableText(card.bin?.cardSpacedFormat()?.twoLineFormat()) }
                     CaptionText(caption = "Date") {
                         NullableText(card.requestTimeMillis?.let { Date(it) }
                             ?.let {
-                                SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).format(
+                                SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.ROOT).format(
                                     it
                                 )
                             })
                     }
                 }
-                Divider(Modifier.fillMaxWidth().padding(10.dp))
+                Divider(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp))
             }
         }
     }
+}
+
+fun String.twoLineFormat() : String {
+    var s = this
+    if (s.length > 9) {
+        return StringBuilder(s).apply { insert(10, "\n") }.toString()
+    } else repeat(10 - s.length) {s = s.plus(" ")}
+    return s
 }
 
 @Composable
@@ -73,7 +86,7 @@ fun MemoryScreenPreviewDark() {
 val mockCards = List(10) {
     CardResponse(
         id = UUID.randomUUID(),
-        bin = "437$it",
+        bin = "${it}37${it}50001003",
         requestTimeMillis = System.currentTimeMillis()
     )
 }

@@ -43,11 +43,7 @@ fun BinListApp() {
                 )
             }
         ) { innerPadding ->
-            Box(
-                Modifier
-                    .padding(innerPadding)
-                    .padding(16.dp)
-            ) {
+            Box(Modifier.padding(innerPadding)) {
                 when (currentScreen.value) {
                     BinListScreen.Main -> {
                         val cardResponse = mainViewModel.cardResponse.collectAsState()
