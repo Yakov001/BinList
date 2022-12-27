@@ -1,7 +1,19 @@
 package com.example.binlist.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.binlist.model.room.CardResponseConverter
+import java.util.*
+
+@TypeConverters(CardResponseConverter::class)
+@Entity(tableName = "card_responses")
 data class CardResponse(
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
     val bin: String? = null,
+    val requestTimeMillis: Long? = null,
+
     val bank: Bank? = null,
     val brand: String? = null,
     val country: Country? = null,

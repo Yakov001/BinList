@@ -56,7 +56,10 @@ fun BinListApp() {
                             onButtonRequestClick = { mainViewModel.requestBin(it) }
                         )
                     }
-                    BinListScreen.Memory -> MemoryScreen()
+                    BinListScreen.Memory -> {
+                        mainViewModel.getAllCards()
+                        MemoryScreen(cards = mainViewModel.memory.value, showDetailedCard = {})
+                    }
                 }
             }
         }
