@@ -1,21 +1,24 @@
 package com.example.binlist.ui.screens
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.binlist.BinListScreen
 import com.example.binlist.model.CardResponse
 import com.example.binlist.ui.composables.*
 import com.example.binlist.ui.theme.BinListTheme
@@ -83,11 +86,18 @@ fun CardInfo(
                 CaptionText(caption = "COUNTRY") {
                     Column {
                         NullableText(card?.country?.name)
-                        Text(
-                            text = "(lat: ${card?.country?.latitude ?: "?"}, " +
-                                    "lon: ${card?.country?.longitude ?: "?"})",
-                            color = Color.Gray
-                        )
+                        if (card?.country?.latitude != null && card.country.longitude != null) {
+                            val intentLocation = Intent(Intent.ACTION_VIEW, Uri.parse("geo:${card.country.latitude},${card.country.longitude}"))
+                            val context = LocalContext.current
+                            Text(
+                                text = "(lat: ${card.country.latitude}, lon: ${card.country.longitude})",
+                                color = Color.Black,
+                                modifier = Modifier.clickable { context.startActivity(Intent.createChooser(intentLocation, null)) },
+                                style = UnderlineTextStyle
+                            )
+                        } else {
+                            Text(text = "(lat: ? lon: ?)", color = Color.Gray)
+                        }
                     }
                 }
             }
@@ -96,12 +106,39 @@ fun CardInfo(
         CaptionText(caption = "BANK") {
             Column {
                 NullableText(card?.bank?.city)
-                NullableText(card?.bank?.url, isLink = true)
-                NullableText(card?.bank?.phone)
+
+                if (card?.bank?.url != null) {
+                    val intentWeb = Intent(Intent.ACTION_VIEW, Uri.parse("http://${card.bank.url}"))
+                    val context = LocalContext.current
+                    NullableText(
+                        card.bank.url,
+                        isLink = true,
+                        hasIntent = true,
+                        sendIntent = { context.startActivity(Intent.createChooser(intentWeb, null)) }
+                    )
+                } else {
+                    NullableText()
+                }
+
+                if (card?.bank?.phone != null) {
+                    val intentCall = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${card.bank.phone}"))
+                    val context = LocalContext.current
+                    NullableText(
+                        card.bank.phone,
+                        hasIntent = true,
+                        sendIntent = { context.startActivity(Intent.createChooser(intentCall, null)) }
+                    )
+                } else {
+                    NullableText()
+                }
             }
         }
     }
 }
+
+val UnderlineTextStyle = TextStyle(
+    textDecoration = TextDecoration.Underline
+)
 
 @Composable
 @Preview

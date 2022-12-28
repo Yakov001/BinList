@@ -1,13 +1,17 @@
 package com.example.binlist.ui.composables
 
+import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
+import com.example.binlist.ui.screens.UnderlineTextStyle
 import com.example.binlist.ui.theme.BinListTheme
 import java.util.*
 
@@ -30,12 +34,15 @@ fun CapsText(text: String, fontSize: TextUnit = TextUnit.Unspecified) = Text(tex
 fun NullableText(
     text: String? = null,
     isLink: Boolean? = null,
+    hasIntent: Boolean = false,
+    sendIntent : () -> Unit = {}
 ) = Text(
-    text = text?.capitalize(Locale.ROOT) ?: "?",
+    text = if (isLink == true) text ?: "?" else text?.capitalize(Locale.ROOT) ?: "?",
     color = if (text != null) {
         if (isLink == true) Color.Blue else Color.Black
-    }
-    else Color.Gray
+    } else Color.Gray,
+    modifier = if (hasIntent) Modifier.clickable { sendIntent() } else Modifier,
+    style = if (hasIntent) UnderlineTextStyle else LocalTextStyle.current
 )
 
 @Composable

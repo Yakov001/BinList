@@ -15,7 +15,7 @@ class CardResponseConverter {
     fun toBank(s: String?) : Bank? {
         if (s == null) return null
         s.split(" ").also {
-            return Bank(it[0], it[1], it[2], it[3])
+            return Bank(city = it[0], name = it[1], url = it[2], phone = it[3])
         }
     }
 
