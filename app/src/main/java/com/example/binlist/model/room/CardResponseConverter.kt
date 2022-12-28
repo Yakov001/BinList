@@ -9,13 +9,13 @@ class CardResponseConverter {
     @TypeConverter
     fun fromBank(bank: Bank?) : String? {
         if (bank == null) return null
-        return "${bank.city} ${bank.name} ${bank.url} ${bank.phone}"
+        return "${bank.city?.replace(" ", "_")} ${bank.name?.replace(" ", "_")} ${bank.url} ${bank.phone}"
     }
     @TypeConverter
     fun toBank(s: String?) : Bank? {
         if (s == null) return null
         s.split(" ").also {
-            return Bank(city = it[0], name = it[1], url = it[2], phone = it[3])
+            return Bank(city = it[0].replace("_", " "), name = it[1].replace("_", " "), url = it[2], phone = it[3])
         }
     }
 
