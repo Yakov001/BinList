@@ -20,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.binlist.ui.composables.BinListTabRow
+import com.example.binlist.ui.screens.CardInfo
 import com.example.binlist.ui.screens.MainScreen
 import com.example.binlist.ui.screens.MemoryScreen
 import com.example.binlist.ui.theme.BinListTheme
@@ -91,7 +92,7 @@ fun BinNavHost(
         ) { entry ->
             val requestId = entry.arguments?.getString("id")
             val request = viewModel.getCardById(UUID.fromString(requestId))
-            Text(request.bin ?: "0000")
+            CardInfo(card = request, textIsStatic = true)
         }
     }
 }

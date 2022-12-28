@@ -21,13 +21,7 @@ import com.example.binlist.ui.theme.BinListTheme
 fun CardTextField(
     onTextChange: (String) -> Unit
 ) {
-    var textFieldValueState by remember {
-        mutableStateOf(
-            TextFieldValue(
-                text = ""
-            )
-        )
-    }
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = "")) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -57,6 +51,33 @@ fun CardTextField(
     }
 }
 
+@Composable
+fun CardStaticTextField(
+    text: String
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        TextField(
+            value = text.cardSpacedFormat(),
+            textStyle = CardNumberTextStyle,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+            singleLine = true,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = MaterialTheme.colors.surface
+            ),
+            readOnly = true,
+            onValueChange = {}
+        )
+        Text(
+            text = "Card Number",
+            color = Color.Gray,
+            fontSize = 10.sp
+        )
+    }
+}
+
 fun String?.cardSpacedFormat(): String {
     val s = this
     if (s.isNullOrEmpty()) return ""
@@ -74,7 +95,7 @@ fun String?.cardSpacedFormat(): String {
 }
 
 val CardNumberTextStyle = TextStyle(
-    color = Color.Gray,
+    color = Color.Black,
     fontSize = 20.sp,
     textAlign = TextAlign.Center
 )

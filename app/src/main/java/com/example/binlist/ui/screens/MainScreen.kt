@@ -17,10 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.binlist.BinListScreen
 import com.example.binlist.model.CardResponse
-import com.example.binlist.ui.composables.CaptionText
-import com.example.binlist.ui.composables.CardTextField
-import com.example.binlist.ui.composables.NullableText
-import com.example.binlist.ui.composables.VariantsText
+import com.example.binlist.ui.composables.*
 import com.example.binlist.ui.theme.BinListTheme
 
 @Composable
@@ -31,12 +28,33 @@ fun MainScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier.fillMaxWidth().padding(16.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         val cardNumber = remember { mutableStateOf("") }
 
         CardTextField { cardNumber.value = it }
 
+        CardInfo(card = card)
+
+        Button(onClick = { onButtonRequestClick(cardNumber.value) }) { Text("Request") }
+    }
+}
+
+@Composable
+fun CardInfo(
+    card: CardResponse? = null,
+    textIsStatic: Boolean = false
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        if (textIsStatic) {
+            CardStaticTextField(text = card!!.bin!!)
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(40.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 CaptionText(caption = "SCHEME / NETWORK") { NullableText(card?.scheme) }
@@ -82,8 +100,6 @@ fun MainScreen(
                 NullableText(card?.bank?.phone)
             }
         }
-
-        Button(onClick = { onButtonRequestClick(cardNumber.value) }) { Text("Request") }
     }
 }
 

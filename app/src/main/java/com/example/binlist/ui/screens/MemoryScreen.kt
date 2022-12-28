@@ -41,20 +41,17 @@ fun MemoryScreen(
                             })
                     }
                 }
-                Divider(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 20.dp))
+                Divider(Modifier.fillMaxWidth().padding(top = 20.dp))
             }
         }
     }
 }
 
 fun String.twoLineFormat() : String {
-    var s = this
+    val s = this
     if (s.length > 9) {
         return StringBuilder(s).apply { insert(10, "\n") }.toString()
-    } else repeat(10 - s.length) {s = s.plus(" ")}
+    }
     return s
 }
 
