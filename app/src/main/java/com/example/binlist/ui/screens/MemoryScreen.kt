@@ -31,7 +31,6 @@ fun MemoryScreen(
                 .padding(horizontal = 16.dp)
             ) {
                 Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-                    CaptionText(caption = "BIN") { NullableText(card.bin?.cardSpacedFormat()?.twoLineFormat()) }
                     CaptionText(caption = "Date") {
                         NullableText(card.requestTimeMillis?.let { Date(it) }
                             ?.let {
@@ -40,6 +39,7 @@ fun MemoryScreen(
                                 )
                             })
                     }
+                    CaptionText(caption = "BIN") { NullableText(card.bin?.cardSpacedFormat()?.twoLineFormat()) }
                 }
                 Divider(Modifier.fillMaxWidth().padding(top = 20.dp))
             }
