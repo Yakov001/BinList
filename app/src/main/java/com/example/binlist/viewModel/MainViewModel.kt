@@ -15,6 +15,7 @@ import com.example.binlist.model.room.BinRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -61,6 +62,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun getAllCards() {
         viewModelScope.launch(Dispatchers.IO) {
             memory.value = repo.getAll()
+        }
+    }
+
+    fun getCardById(id: UUID) : CardResponse {
+        return runBlocking(Dispatchers.IO) {
+            repo.getById(id)
         }
     }
 }
