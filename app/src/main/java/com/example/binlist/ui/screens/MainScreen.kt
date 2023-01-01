@@ -4,9 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,13 +26,14 @@ import com.example.binlist.ui.theme.BinListTheme
 
 @Composable
 fun MainScreen(
+    modifier: Modifier = Modifier,
     card: CardResponse? = null,
     onButtonRequestClick: (String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         val cardNumber = remember { mutableStateOf("") }
 
@@ -45,15 +47,14 @@ fun MainScreen(
 
 @Composable
 fun CardInfo(
+    modifier: Modifier = Modifier,
     card: CardResponse? = null,
     textIsStatic: Boolean = false
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+        modifier = modifier.fillMaxWidth()
     ) {
         if (textIsStatic) {
             CardStaticTextField(text = card!!.bin!!)
@@ -140,6 +141,7 @@ val UnderlineTextStyle = TextStyle(
     textDecoration = TextDecoration.Underline
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun MainScreenPreview() {
@@ -153,6 +155,7 @@ fun MainScreenPreview() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun MainScreenPreviewDark() {

@@ -3,7 +3,7 @@ package com.example.binlist.ui.composables
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.binlist.ui.theme.BinListTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardTextField(
     onTextChange: (String) -> Unit
@@ -40,7 +41,7 @@ fun CardTextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface
+                containerColor = MaterialTheme.colorScheme.background
             )
         )
         Text(
@@ -51,6 +52,7 @@ fun CardTextField(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardStaticTextField(
     text: String
@@ -65,7 +67,7 @@ fun CardStaticTextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface
+                containerColor = MaterialTheme.colorScheme.background
             ),
             readOnly = true,
             onValueChange = {}

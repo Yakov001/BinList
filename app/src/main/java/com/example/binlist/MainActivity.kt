@@ -4,13 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -36,6 +35,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BinListApp() {
 
@@ -73,6 +73,7 @@ fun BinNavHost(
         composable(BinListScreen.Main.name) {
             val cardResponse = viewModel.cardResponse.collectAsState()
             MainScreen(
+                modifier = Modifier.padding(16.dp),
                 card = cardResponse.value.data,
                 onButtonRequestClick = { viewModel.requestBin(it) }
             )
@@ -92,7 +93,7 @@ fun BinNavHost(
         ) { entry ->
             val requestId = entry.arguments?.getString("id")
             val request = viewModel.getCardById(UUID.fromString(requestId))
-            CardInfo(card = request, textIsStatic = true)
+            CardInfo(card = request, textIsStatic = true, modifier = Modifier.padding(16.dp))
         }
     }
 }
