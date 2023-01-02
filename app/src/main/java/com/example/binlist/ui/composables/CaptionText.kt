@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +28,11 @@ fun CaptionText(
 }
 
 @Composable
-fun CapsText(text: String, fontSize: TextUnit = TextUnit.Unspecified) = Text(text = text.uppercase(),fontSize = fontSize, color = Color.Gray)
+fun CapsText(text: String, fontSize: TextUnit = TextUnit.Unspecified) = Text(
+    text = text.uppercase(),
+    fontSize = fontSize,
+    color = MaterialTheme.colorScheme.tertiary
+)
 
 @Composable
 fun NullableText(
