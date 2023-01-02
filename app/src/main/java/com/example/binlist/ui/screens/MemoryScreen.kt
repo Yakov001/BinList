@@ -7,15 +7,19 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.binlist.model.CardResponse
-import com.example.binlist.ui.composables.CaptionText
-import com.example.binlist.ui.composables.NullableText
-import com.example.binlist.ui.composables.cardSpacedFormat
+import com.example.binlist.ui.composables.*
 import com.example.binlist.ui.theme.BinListTheme
+import com.example.binlist.ui.theme.courierNewFamily
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,25 +28,30 @@ fun MemoryScreen(
     cards: List<CardResponse>,
     showDetailedCard: (CardResponse) -> Unit
 ) {
+    var dateAscending by rememberSaveable { mutableStateOf(true)}
     LazyColumn() {
-        items(cards) { card ->
+        item {
+            MemorySortingRow(
+                dateAscending = dateAscending,
+                onDateSortSwitch = { dateAscending = !dateAscending }
+            )
+        }
+        items(
+            if (!dateAscending) cards.sortedBy { -it.requestTimeMillis!! } else cards
+        ) { card ->
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .clickable { showDetailedCard(card) }
-                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
             ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-                    CaptionText(caption = "Date") {
-                        NullableText(card.requestTimeMillis?.let { Date(it) }
-                            ?.let {
-                                SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.ROOT).format(
-                                    it
-                                )
-                            })
-                    }
-                    CaptionText(caption = "BIN") { NullableText(card.bin?.cardSpacedFormat()?.twoLineFormat()) }
+                Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
+                    Text(
+                        SimpleDateFormat("d MMMM yyyy\nHH:mm", Locale.UK)
+                            .format(card.requestTimeMillis!!)
+                    )
+                    Text(card.bin?.cardSpacedFormat()?.twoLineFormat()!!, fontFamily = courierNewFamily)
                 }
-                Divider(Modifier.fillMaxWidth().padding(top = 20.dp))
+                Divider(Modifier.fillMaxWidth().padding(top = 8.dp))
             }
         }
     }

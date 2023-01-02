@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -16,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.binlist.ui.theme.BinListTheme
+import com.example.binlist.ui.theme.courierNewFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,7 +101,8 @@ fun String?.cardSpacedFormat(): String {
 val CardNumberTextStyle = TextStyle(
     color = Color.Black,
     fontSize = 20.sp,
-    textAlign = TextAlign.Center
+    textAlign = TextAlign.Center,
+    fontFamily = courierNewFamily
 )
 
 @Composable
