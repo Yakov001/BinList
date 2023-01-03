@@ -6,8 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -18,12 +22,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.binlist.model.Resource
 import com.example.binlist.ui.composables.BinListTabRow
 import com.example.binlist.ui.screens.CardInfo
 import com.example.binlist.ui.screens.MainScreen
 import com.example.binlist.ui.screens.MemoryScreen
 import com.example.binlist.ui.theme.BinListTheme
 import com.example.binlist.viewModel.MainViewModel
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -46,7 +52,11 @@ fun BinListApp() {
         val backstackEntry = navController.currentBackStackEntryAsState()
         val currentScreen = BinListScreen.fromRoute(backstackEntry.value?.destination?.route)
 
+        val snackbarHostState = remember { SnackbarHostState() }
+        val scope = rememberCoroutineScope()
+
         Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {
                 BinListTabRow(
                     onTabSelected = { navController.navigate(it.name) },
@@ -54,7 +64,11 @@ fun BinListApp() {
                 )
             }
         ) { innerPadding ->
-            BinNavHost(navController, mainViewModel, Modifier.padding(innerPadding))
+            BinNavHost(
+                navController = navController,
+                viewModel = mainViewModel,
+                showSnackbar = { scope.launch { snackbarHostState.showSnackbar(it) } },
+                modifier = Modifier.padding(innerPadding))
         }
     }
 }
@@ -63,6 +77,7 @@ fun BinListApp() {
 fun BinNavHost(
     navController: NavHostController,
     viewModel: MainViewModel,
+    showSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -72,6 +87,7 @@ fun BinNavHost(
     ) {
         composable(BinListScreen.Main.name) {
             val cardResponse = viewModel.cardResponse.collectAsState()
+            if (cardResponse.value is Resource.Error) showSnackbar(cardResponse.value.message!!)
             MainScreen(
                 modifier = Modifier.padding(16.dp),
                 card = cardResponse.value.data,
