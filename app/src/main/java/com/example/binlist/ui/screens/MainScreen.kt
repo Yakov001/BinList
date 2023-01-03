@@ -4,10 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -92,12 +89,12 @@ fun CardInfo(
                             val context = LocalContext.current
                             Text(
                                 text = "(lat: ${card.country.latitude}, lon: ${card.country.longitude})",
-                                color = Color.Black,
+                                color = MaterialTheme.colorScheme.secondary,
                                 modifier = Modifier.clickable { context.startActivity(Intent.createChooser(intentLocation, null)) },
                                 style = UnderlineTextStyle
                             )
                         } else {
-                            Text(text = "(lat: ? lon: ?)", color = Color.Gray)
+                            Text(text = "(lat: ? lon: ?)", color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3F))
                         }
                     }
                 }

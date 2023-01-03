@@ -43,12 +43,13 @@ fun CardTextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = MaterialTheme.colorScheme.background
+                containerColor = MaterialTheme.colorScheme.background,
+                textColor = MaterialTheme.colorScheme.secondary
             )
         )
         Text(
             text = "Enter the first digits of a card number (BIN/IIN)",
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3F),
             fontSize = 10.sp
         )
     }
@@ -69,14 +70,15 @@ fun CardStaticTextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = MaterialTheme.colorScheme.background
+                containerColor = MaterialTheme.colorScheme.background,
+                textColor = MaterialTheme.colorScheme.secondary
             ),
             readOnly = true,
             onValueChange = {}
         )
         Text(
             text = "Card Number",
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3F),
             fontSize = 10.sp
         )
     }
@@ -99,7 +101,6 @@ fun String?.cardSpacedFormat(): String {
 }
 
 val CardNumberTextStyle = TextStyle(
-    color = Color.Black,
     fontSize = 20.sp,
     textAlign = TextAlign.Center,
     fontFamily = courierNewFamily
