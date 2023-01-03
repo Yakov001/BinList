@@ -28,7 +28,7 @@ fun MemoryScreen(
     cards: List<CardResponse>,
     showDetailedCard: (CardResponse) -> Unit
 ) {
-    var dateAscending by rememberSaveable { mutableStateOf(true)}
+    var dateAscending by rememberSaveable { mutableStateOf(false)}
     LazyColumn() {
         item {
             MemorySortingRow(
@@ -44,12 +44,17 @@ fun MemoryScreen(
                 .clickable { showDetailedCard(card) }
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp)
             ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     Text(
-                        SimpleDateFormat("d MMMM yyyy\nHH:mm", Locale.UK)
-                            .format(card.requestTimeMillis!!)
+                        text = SimpleDateFormat("d MMM yyyy\nHH:mm", Locale.UK)
+                            .format(card.requestTimeMillis!!),
+                        modifier = Modifier.weight(1F)
                     )
-                    Text(card.bin?.cardSpacedFormat()?.twoLineFormat()!!, fontFamily = courierNewFamily)
+                    Text(
+                        text = card.bin?.cardSpacedFormat()?.twoLineFormat()!!,
+                        fontFamily = courierNewFamily,
+                        modifier = Modifier.weight(2F)
+                    )
                 }
                 Divider(Modifier.fillMaxWidth().padding(top = 8.dp))
             }
@@ -96,6 +101,6 @@ val mockCards = List(10) {
     CardResponse(
         id = UUID.randomUUID(),
         bin = "${it}37${it}50001003",
-        requestTimeMillis = System.currentTimeMillis()
+        requestTimeMillis = System.currentTimeMillis() + (-20000000000L..0).random()
     )
 }

@@ -22,16 +22,17 @@ fun CaptionText(
     Text: @Composable () -> Unit
 ) {
     Column() {
-        CapsText(caption, capsFontSize)
+        CapsText(fontSize = capsFontSize, text = caption)
         Text()
     }
 }
 
 @Composable
-fun CapsText(text: String, fontSize: TextUnit = TextUnit.Unspecified) = Text(
+fun CapsText(modifier: Modifier = Modifier, fontSize: TextUnit = TextUnit.Unspecified, text: String) = Text(
     text = text.uppercase(),
     fontSize = fontSize,
-    color = MaterialTheme.colorScheme.tertiary
+    color = MaterialTheme.colorScheme.tertiary,
+    modifier = modifier
 )
 
 @Composable

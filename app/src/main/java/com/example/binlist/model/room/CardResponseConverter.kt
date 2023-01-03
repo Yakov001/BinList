@@ -15,14 +15,19 @@ class CardResponseConverter {
     fun toBank(s: String?) : Bank? {
         if (s == null) return null
         s.split(" ").also {
-            return Bank(city = it[0].replace("_", " "), name = it[1].replace("_", " "), url = it[2], phone = it[3])
+            return Bank(
+                city = if (it[0] == "null") null else it[0].replace("_", " "),
+                name = if (it[1] == "null") null else it[1].replace("_", " "),
+                url = if (it[2] == "null") null else it[2],
+                phone = if (it[3] == "null") null else it[3]
+            )
         }
     }
 
     @TypeConverter
     fun fromCountry(country: Country?) : String? {
         if (country == null) return null
-        return "${country.longitude?.toString()} ${country.latitude?.toString()} ${country.name} " +
+        return "${country.longitude?.toString()} ${country.latitude?.toString()} ${country.name?.replace(" ", "_")} " +
                 "${country.alpha2} ${country.currency} ${country.emoji} ${country.numeric}"
     }
 
@@ -33,7 +38,7 @@ class CardResponseConverter {
             return Country(
                 longitude = it[0].toIntOrNull(),
                 latitude = it[1].toIntOrNull(),
-                name = if (it[2] == "null") null else it[2],
+                name = if (it[2] == "null") null else it[2].replace("_", " "),
                 alpha2 = if (it[3] == "null") null else it[3],
                 currency = if (it[4] == "null") null else it[4],
                 emoji = if (it[5] == "null") null else it[5],
