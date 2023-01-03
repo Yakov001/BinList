@@ -8,10 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -80,14 +77,16 @@ fun BinNavHost(
     showSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val cardResponse = viewModel.cardResponse.collectAsState()
+    LaunchedEffect(cardResponse.value) {
+        if (cardResponse.value is Resource.Error) showSnackbar(cardResponse.value.message!!)
+    }
     NavHost(
         navController = navController,
         startDestination = BinListScreen.Main.name,
         modifier = modifier
     ) {
         composable(BinListScreen.Main.name) {
-            val cardResponse = viewModel.cardResponse.collectAsState()
-            if (cardResponse.value is Resource.Error) showSnackbar(cardResponse.value.message!!)
             MainScreen(
                 modifier = Modifier.padding(16.dp),
                 card = cardResponse.value.data,
